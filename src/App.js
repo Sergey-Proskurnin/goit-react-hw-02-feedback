@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+
 import "./App.css";
+import Statistics from "components/Statistics";
+import FeedbackOptions from "components/FeedbackOptions";
+import Notification from "components/Notification";
 
 class App extends Component {
   state = {
@@ -7,50 +11,46 @@ class App extends Component {
     neutral: 0,
     bad: 0,
   };
-  handleIncrementGood = () => {
-    this.setState((prevState) => ({
-      good: prevState.good + 1,
-    }));
-  };
-  handleIncrementNeutral = () => {
-    this.setState((prevState) => ({
-      neutral: prevState.neutral + 1,
-    }));
-  };
-  handleIncrementBad = () => {
-    this.setState((prevState) => ({
-      bad: prevState.bad + 1,
-    }));
+
+  handleIncrement = (e) => {
+    const { name } = e.target;
+    this.setState((prevState) => ({ [name]: prevState[name] + 1 }));
   };
 
   countTotalFeedback() {
-    // const { good, neutral, bad } = this.state;
-    return this.state.good
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
   }
+
+  totalPositiv() {
+    const { good } = this.state;
+    return Math.round((good / this.countTotalFeedback()) * 100);
+  }
+
   countPositiveFeedbackPercentage() {}
   render() {
+    const total = this.countTotalFeedback();
+    const positivTotal = this.totalPositiv() ? this.totalPositiv() : 0;
     const { good, neutral, bad } = this.state;
+    const keys = Object.keys(this.state);
+
     return (
       <>
-        <h2>Please leave feedback</h2>
-        <button type="button" onClick={this.handleIncrementGood}>
-          Good
-        </button>
-        <button type="button" onClick={this.handleIncrementNeutral}>
-          Neutral
-        </button>
-        <button type="button" onClick={this.handleIncrementBad}>
-          Bad
-        </button>
-
-        <h2>Statistics</h2>
-        <div>
-          <p>Good: {good}</p>
-          <p>Neutral: {neutral}</p>
-          <p>Bad: {bad}</p>
-          <p>Total: {good+neutral+bad}</p>
-          <p>Positive feedback: {(good+neutral)/(good+neutral+bad)*100}%</p>
-        </div>
+        <FeedbackOptions
+          options={keys}
+          onLeaveFeedback={this.handleIncrement}
+        />
+        {total ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={positivTotal}
+          />
+        ) : (
+          <Notification message="No feedback given" />
+        )}
       </>
     );
   }
