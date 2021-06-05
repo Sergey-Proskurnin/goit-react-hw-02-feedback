@@ -1,6 +1,9 @@
 import React from "react";
 
-const Notification = ({message}) =>
-<p>{message}</p>
+import s from "./Notification.module.css";
 
-export default Notification
+const Notification = ({ message }) => (
+  <p className={s.description}>{message}</p>
+);
+
+export default Notification;

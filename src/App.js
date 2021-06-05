@@ -1,15 +1,28 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import "./App.css";
 import Statistics from "components/Statistics";
 import FeedbackOptions from "components/FeedbackOptions";
 import Notification from "components/Notification";
+import Container from "components/Container";
 
 class App extends Component {
-  state = {
+  static defaultProps = {
     good: 0,
     neutral: 0,
     bad: 0,
+  };
+
+  static propTypes = {
+    good: PropTypes.number,
+    neutral: PropTypes.number,
+    bad: PropTypes.number,
+  };
+
+  state = {
+    good: this.props.good,
+    neutral: this.props.neutral,
+    bad: this.props.bad,
   };
 
   handleIncrement = (e) => {
@@ -35,7 +48,7 @@ class App extends Component {
     const keys = Object.keys(this.state);
 
     return (
-      <>
+      <Container>
         <FeedbackOptions
           options={keys}
           onLeaveFeedback={this.handleIncrement}
@@ -51,7 +64,7 @@ class App extends Component {
         ) : (
           <Notification message="No feedback given" />
         )}
-      </>
+      </Container>
     );
   }
 }

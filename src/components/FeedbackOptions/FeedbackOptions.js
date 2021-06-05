@@ -1,14 +1,24 @@
 import React from "react";
 
+import s from "./FeedbackOptions.module.css";
+
 import Section from "components/Section";
 
 const FeedbackOptions = ({ options, onLeaveFeedback }) => (
   <Section title="Please leave feedback">
-    {options.map((option, idx) => (
-      <button key={idx} type="button" name={option} onClick={onLeaveFeedback}>
-        {option}
-      </button>
-    ))}
+    <div className={s.section}>
+      {options.map((option, idx) => (
+        <button
+          className={s.btn}
+          key={idx}
+          type="button"
+          name={option}
+          onClick={onLeaveFeedback}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
   </Section>
 );
 
